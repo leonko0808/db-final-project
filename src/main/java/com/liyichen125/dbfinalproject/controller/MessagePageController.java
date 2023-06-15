@@ -5,6 +5,7 @@ import com.liyichen125.dbfinalproject.constant.ItemType;
 import com.liyichen125.dbfinalproject.dto.MessageRequest;
 import com.liyichen125.dbfinalproject.model.Item;
 import com.liyichen125.dbfinalproject.model.Message;
+import com.liyichen125.dbfinalproject.model.User;
 import com.liyichen125.dbfinalproject.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,8 +36,11 @@ public class MessagePageController {
 
 
     @PostMapping("/add-message-success")
-    public String addMessageSuccess(@ModelAttribute("MessageRequest") MessageRequest messageRequest, Model model) {
-        model.addAttribute("MessageRequest", new MessageRequest());
+    public String addMessageSuccess(@ModelAttribute("MessageRequest") MessageRequest messageRequest, Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+
+        messageRequest.setUser_id(user.getUser_id());
+
         Integer message_id = messageService.createMessage(messageRequest);
         model.addAttribute("message_id", message_id);
         if (message_id != null) {

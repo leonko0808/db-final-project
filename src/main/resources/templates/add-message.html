@@ -55,7 +55,7 @@
 <div class="message-board-container">
     <div class="message-board" th:each="message : ${messages}">
         <h3>
-            <span th:text="${message.user_id}"></span>&nbsp;&nbsp;
+<!--            <span th:text="${message.user_id}"></span>&nbsp;&nbsp;-->
             <span class="message-time" th:text="${message.m_time}"></span>
             <span class="delete-button" th:attr="data-id=${message.message_id}" onclick="deleteMessage(this.getAttribute('data-id'))">Delete</span>
         </h3>
