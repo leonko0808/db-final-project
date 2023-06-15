@@ -26,21 +26,25 @@ public class MessagePageController {
     private MessageService messageService;
 
     @GetMapping("/add-message")
-    public String showAddItemForm(Model model) {
+    public String showAddItemForm(HttpSession session,Model model) {
         model.addAttribute("MessageRequest", new MessageRequest());
-
+        User user = (User) session.getAttribute("user");
         List<Message> messages = messageService.getMessages();
-        model.addAttribute("messages",messages);
-        return "add-message";
+        model.addAttribute("messages", messages);
+        if (user.getRole().toString().equals("STUDENT")) { // 假设角色值1表示学生
+            return "student-add-message";
+        } else if (user.getRole().toString().equals("ADMIN")) { // 假设角色值2表示管理员
+            return "admin-add-message";
+        }else{
+            return "login";
+        }
+//
     }
 
 
     @PostMapping("/add-message-success")
-    public String addMessageSuccess(@ModelAttribute("MessageRequest") MessageRequest messageRequest, Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-
-        messageRequest.setUser_id(user.getUser_id());
-
+    public String addMessageSuccess(@ModelAttribute("MessageRequest") MessageRequest messageRequest, Model model) {
+//        model.addAttribute("MessageRequest", new MessageRequest());
         Integer message_id = messageService.createMessage(messageRequest);
         model.addAttribute("message_id", message_id);
         if (message_id != null) {

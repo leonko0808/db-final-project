@@ -37,7 +37,7 @@
             <td th:text="${record.item.item_name}"></td>
         </div>
         <td>
-            <a th:href="@{/send-email/{id}(id=${record.record_id})}">確認借用</a>
+            <a th:href="@{/send-email/{id}(id=${record.record_id})}">寄信</a>
         </td>
 
 
@@ -46,24 +46,5 @@
 
     </tbody>
 </table>
-<script >
- function sendEmail(to, recordId) {
-    fetch('/send-email?to=' + to + '&recordId=' + recordId, {
-        method: 'POST'
-    }).then(function (response) {
-        // 处理响应结果
-        if (response.ok) {
-            alert('邮件已发送');
-        } else {
-            alert('邮件发送失败');
-        }
-    }).catch(function (error) {
-        // 处理错误情况
-        console.error('邮件发送失败:', error);
-        alert('邮件发送失败');
-    });
-}
-
-</script>
 </body>
 </html>
